@@ -417,7 +417,7 @@ function obfuscateSourceForUpdate(sourceCode) {
 	const verMatch = code.match(verRegex);
 	const fixMatch = code.match(fixRegex);
 
-	const versionStr = verMatch ? verMatch[2] : "2.2.5";
+	const versionStr = verMatch ? verMatch[2] : "2.2.6";
 	const updateFixStr = fixMatch ? fixMatch[2] : "constsCURRENT_VERSION='d.d.d'";
 
 	const xorKey1 = 198;
@@ -9212,11 +9212,21 @@ function downloadZeusSource() {
 				remVol = rem > 0 ? rem.toFixed(2) + "GB" : "0GB";
 			}
 			let remTime = "Unlimited";
-			if (user.expiry_days && user.created_at) {
-				const created = new Date(user.created_at);
-				const expiryDate = new Date(created.getTime() + user.expiry_days * 24 * 60 * 60 * 1000);
-				const diffDays = Math.ceil((expiryDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-				remTime = diffDays > 0 ? diffDays + "Days" : "0Days";
+			if (user.expiry_days) {
+				if (user.start_on_first_connect === 1) {
+					if (user.first_connection_time) {
+						const expiryDate = new Date(user.first_connection_time + user.expiry_days * 86400000);
+						const diffDays = Math.ceil((expiryDate.getTime() - Date.now()) / 86400000);
+						remTime = diffDays > 0 ? diffDays + "Days" : "0Days";
+					} else {
+						remTime = user.expiry_days + "Days (Not Started)";
+					}
+				} else if (user.created_at) {
+					const created = new Date(user.created_at);
+					const expiryDate = new Date(created.getTime() + user.expiry_days * 86400000);
+					const diffDays = Math.ceil((expiryDate.getTime() - Date.now()) / 86400000);
+					remTime = diffDays > 0 ? diffDays + "Days" : "0Days";
+				}
 			}
 			let remReq = "Unlimited";
 			if (user.limit_req) {
@@ -9277,6 +9287,7 @@ links.push('vle' + 'ss://' + (user.uuid || '') + '@0.0.0.0:1?encryption=none&sec
 						if (user.advanced_frag) userFrag += "&fm=" + encodeURIComponent(user.advanced_frag);
 						if (isTlsPort && user.cipher_suites) userFrag += "&cs=" + encodeURIComponent(user.cipher_suites);
 						if (user.tls_mask) userFrag += "&mask=" + encodeURIComponent(user.tls_mask);
+						if (isTlsPort && user.ech) userFrag += "&ech=" + encodeURIComponent(user.ech);
 						
 						const tlsParams = isTlsPort ? ("&insecure=0&fp=" + fp + "&allowInsecure=0&sni=" + host) : "";
 						if (enableVless) {
@@ -9957,6 +9968,7 @@ async function testUserSocksProxy() {
 							advanced_frag: u.advanced_frag,
 							cipher_suites: u.cipher_suites,
 							tls_mask: u.tls_mask,
+							ech: u.ech,
 							user_proxy_iata: u.user_proxy_iata,
 							user_socks5: u.user_socks5,
 							user_proxy_ip: u.user_proxy_ip,
@@ -10055,7 +10067,7 @@ async function testUserSocksProxy() {
 				window.location.reload();
 			}
 		}
-const CURRENT_VERSION = '2.2.5';
+const CURRENT_VERSION = '2.2.6';
 const UPDATE_FIX = "constsCURRENT_VERSION='d.d.d'";
 		window.autoUpdateStatusCache = false;
 		async function checkAutoUpdateSetup() {
@@ -11382,11 +11394,21 @@ ${COMMON_TOAST_HTML}
 				remVol = rem > 0 ? rem.toFixed(2) + "GB" : "0GB";
 			}
 			let remTime = "Unlimited";
-			if (u.expiry_days && u.created_at) {
-				const created = new Date(u.created_at);
-				const expiryDate = new Date(created.getTime() + u.expiry_days * 24 * 60 * 60 * 1000);
-				const diffDays = Math.ceil((expiryDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-				remTime = diffDays > 0 ? diffDays + "Days" : "0Days";
+			if (u.expiry_days) {
+				if (u.start_on_first_connect === 1) {
+					if (u.first_connection_time) {
+						const expiryDate = new Date(u.first_connection_time + u.expiry_days * 86400000);
+						const diffDays = Math.ceil((expiryDate.getTime() - Date.now()) / 86400000);
+						remTime = diffDays > 0 ? diffDays + "Days" : "0Days";
+					} else {
+						remTime = u.expiry_days + "Days (Not Started)";
+					}
+				} else if (u.created_at) {
+					const created = new Date(u.created_at);
+					const expiryDate = new Date(created.getTime() + u.expiry_days * 86400000);
+					const diffDays = Math.ceil((expiryDate.getTime() - Date.now()) / 86400000);
+					remTime = diffDays > 0 ? diffDays + "Days" : "0Days";
+				}
 			}
 			let remReq = "Unlimited";
 			if (u.limit_req) {
@@ -11447,6 +11469,7 @@ links.push('vle' + 'ss://' + (u.uuid || '') + '@0.0.0.0:1?encryption=none&securi
 						if (u.advanced_frag) userFrag += "&fm=" + encodeURIComponent(u.advanced_frag);
 						if (isTlsPort && u.cipher_suites) userFrag += "&cs=" + encodeURIComponent(u.cipher_suites);
 						if (u.tls_mask) userFrag += "&mask=" + encodeURIComponent(u.tls_mask);
+						if (isTlsPort && u.ech) userFrag += "&ech=" + encodeURIComponent(u.ech);
 						
 						const tlsParams = isTlsPort ? ("&insecure=0&fp=" + fp + "&allowInsecure=0&sni=" + host) : "";
 						if (enableVless) {
