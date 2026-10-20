@@ -7004,6 +7004,11 @@ ${COMMON_TOAST_HTML}
 						fragToggle.checked = false;
 						if (typeof window.toggleFragInputs === 'function') window.toggleFragInputs(false);
 					}
+					const echToggle = document.getElementById('input-ech-settings-toggle');
+					if (echToggle && echToggle.checked) {
+						echToggle.checked = false;
+						if (typeof window.toggleEchSettingsInputs === 'function') window.toggleEchSettingsInputs(false);
+					}
 				} else {
 					container.classList.add('opacity-50', 'pointer-events-none', 'hidden');
 					if (icon) icon.classList.remove('rotate-180');
@@ -7017,6 +7022,12 @@ ${COMMON_TOAST_HTML}
 				if (show) {
 					container.classList.remove('opacity-50', 'pointer-events-none', 'hidden');
 					if (icon) icon.classList.add('rotate-180');
+					
+					const advToggle = document.getElementById('input-advanced-settings-toggle');
+					if (advToggle && advToggle.checked) {
+						advToggle.checked = false;
+						if (typeof window.toggleAdvancedSettingsInputs === 'function') window.toggleAdvancedSettingsInputs(false);
+					}
 				} else {
 					container.classList.add('opacity-50', 'pointer-events-none', 'hidden');
 					if (icon) icon.classList.remove('rotate-180');

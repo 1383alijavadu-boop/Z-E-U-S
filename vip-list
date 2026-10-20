@@ -3,9 +3,6 @@
     "name": "AE.txt"
   },
   {
-    "name": "BG.txt"
-  },
-  {
     "name": "CA.txt"
   },
   {
@@ -13,21 +10,6 @@
   },
   {
     "name": "GB.txt"
-  },
-  {
-    "name": "IT.txt"
-  },
-  {
-    "name": "KZ.txt"
-  },
-  {
-    "name": "LV.txt"
-  },
-  {
-    "name": "NL.txt"
-  },
-  {
-    "name": "NO.txt"
   },
   {
     "name": "SE.txt"
@@ -40,8 +22,5 @@
   },
   {
     "name": "US.txt"
-  },
-  {
-    "name": "UZ.txt"
   }
 ]
